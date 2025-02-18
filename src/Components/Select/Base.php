@@ -26,6 +26,7 @@ class Base extends WireUiComponent
         'always-fetch' => false,
         'flip-options' => false,
         'option-label' => null,
+        'option-label-if-null' => null,
         'option-value' => null,
         'empty-message' => null,
         'option-key-value' => false,
@@ -63,9 +64,14 @@ class Base extends WireUiComponent
         $this->validateConfig();
     }
 
-    public function getOptionLabel(mixed $option): string
+    public function getOptionLabel(mixed $option): string|null
     {
         return data_get($option, $this->optionLabel);
+    }
+
+    public function getOptionLabelIfNull(mixed $option): string
+    {
+        return data_get($option, $this->optionLabelIfNull);
     }
 
     public function optionsToArray(): array
@@ -73,7 +79,7 @@ class Base extends WireUiComponent
         return $this->options
             ->map(function ($rawOption, $index): array {
                 $option = [
-                    'label' => $this->getOptionLabel($rawOption),
+                    'label' => $this->getOptionLabel($rawOption) ?? 'Приватный чат ' . $this->getOptionLabelIfNull($rawOption),
                     'value' => $this->getOptionValue($index, $rawOption),
                     'template' => data_get($rawOption, 'template'),
                     'disabled' => data_get($rawOption, 'disabled'),
