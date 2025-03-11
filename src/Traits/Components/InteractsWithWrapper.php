@@ -38,6 +38,7 @@ trait InteractsWithWrapper
             'readonly',
             'required',
             'wire:model',
+            'wire:change',
             'placeholder',
             'autocomplete',
         ];
